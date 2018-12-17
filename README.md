@@ -16,7 +16,7 @@ this.val.addListener(({ value }) => {
 })
  ```
 with
- ```
+```javascript
 connect(this.ref2.current, this.val2, "width")
 connect(this.ref2.current, this.val2, "height")
 ```
