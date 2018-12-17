@@ -20,3 +20,4 @@ with
 connect(this.ref.current, this.val, "width")
 connect(this.ref.current, this.val, "height")
 ```
+in order to omit JS trip
