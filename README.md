@@ -1,7 +1,7 @@
 # react-native-animated-props
 
   
-![](https://cultofthepartyparrot.com/parrots/hd/rightparrot.gif)
+![](https://cultofthepartyparrot.com/parrots/hd/parrot.gif)
 
 What if I tell you could replace:
 
@@ -21,3 +21,5 @@ connect(this.ref.current, this.val, "width")
 connect(this.ref.current, this.val, "height")
 ```
 in order to omit JS trip
+
+![](https://cultofthepartyparrot.com/parrots/hd/fastparrot.gif)
