@@ -1,9 +1,12 @@
-#if __has_include(<React/RCTBridgeModule.h>)
 #import <React/RCTBridgeModule.h>
-#else
-#import "RCTBridgeModule.h"
-#endif
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTEventEmitter.h>
+#import <React/RCTUIManager.h>
+#import <React/RCTUIManagerObserverCoordinator.h>
+#import <React/RCTUIManagerUtils.h>
+#import <RCTAnimation/RCTValueAnimatedNode.h>
+#import <RCTAnimation/RCTNativeAnimatedNodesManager.h>
 
-@interface RNAnimatedProps : NSObject <RCTBridgeModule>
+@interface RNAnimatedProps : RCTEventEmitter <RCTBridgeModule, RCTValueAnimatedNodeObserver>
 
 @end
