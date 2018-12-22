@@ -4,7 +4,7 @@ package com.osdnk;
  * Through me you pass into the city of woe:
  * Through me you pass into eternal pain:
  * Through me among the people lost for aye.
- * Justice the founder of my fabric moved:
+ * Justice the founder of my __fabric__ moved:
  * To rear me was the task of Power divine,
  * Supremest Wisdom, and primeval Love. 1
  * Before me things create were none, save things
