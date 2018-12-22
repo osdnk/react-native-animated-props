@@ -64,6 +64,11 @@
 
 }
 
+-(void) setBridge:(RCTBridge *)bridge {
+  [super setBridge:bridge];
+  RCTNativeAnimatedNodesManager *x = [[[[self.bridge valueForKey:@"moduleDataByName"] valueForKey:@"NativeAnimatedModule"] valueForKey: @"instance"] valueForKey:@"nodesManager"];
+  x;
+}
 
 
 RCT_EXPORT_MODULE()
@@ -73,7 +78,6 @@ RCT_EXPORT_METHOD(connect:(nonnull NSNumber *)nodeID
                   withPropName:(nonnull NSString *) prop)
 {
   RCTNativeAnimatedNodesManager *x = [[[[self.bridge valueForKey:@"moduleDataByName"] valueForKey:@"NativeAnimatedModule"] valueForKey: @"instance"] valueForKey:@"nodesManager"];
-  x;
 }
 
 RCT_EXPORT_METHOD(disconnect:(nonnull NSNumber *)nodeID
