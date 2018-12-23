@@ -55,6 +55,7 @@
 @property (nonatomic) NSNumber *viewTag;
 @property (nonatomic) NSNumber *nodeID;
 @property (nonatomic) NSString *prop;
+@property (nonatomic) NSString *type;
 
 @end
 
@@ -63,11 +64,13 @@
 - (instancetype) initWithViewTag:(NSNumber *)viewTag
                       withNodeID:(NSNumber *)nodeID
                         withProp:(NSString *)prop
+                          onType:(NSString *)type
 {
   if ((self = [super init])) {
     _viewTag = viewTag;
     _nodeID = nodeID;
     _prop = prop;
+    _type = type;
   }
   return self;
 }
@@ -102,7 +105,13 @@ typedef void (^AnimatedOperation)(RCTNativeAnimatedNodesManager *nodesManager);
       if (p.nodeID == node.nodeTag) {
         NSMutableDictionary *nativeProps = [NSMutableDictionary new];
         NSString *viewName = [_uiManager viewNameForReactTag:p.viewTag];
-        nativeProps[p.prop] = [[NSNumber alloc] initWithFloat:value];
+        id val = [[NSNumber alloc] initWithFloat:value];
+        if ([p.type isEqualToString:@"number"]) {
+          val = [[NSNumber alloc] initWithFloat:value];
+        } else if ([p.type isEqualToString:@"string"]) {
+          val = [NSString stringWithFormat: @"%.2f", value];
+        }
+        nativeProps[p.prop] = val;
         [_uiManager updateView:p.viewTag viewName:viewName props:nativeProps];
       }
     }
@@ -170,10 +179,11 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(connect:(nonnull NSNumber *)viewTag
                   withAnimatedNode:(nonnull NSNumber *)nodeID
-                  withPropName:(nonnull NSString *) prop)
+                  withPropName:(nonnull NSString *) prop
+                  onType:(nonnull NSString *) type)
 {
   [self addListenerIfNeeded:nodeID];
-  [_connectors addObject:[[PropsConncetor alloc] initWithViewTag:viewTag withNodeID:nodeID withProp:prop]];
+  [_connectors addObject:[[PropsConncetor alloc] initWithViewTag:viewTag withNodeID:nodeID withProp:prop onType:type]];
 }
 
 RCT_EXPORT_METHOD(disconnect:(nonnull NSNumber *)viewTag

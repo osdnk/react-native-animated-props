@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Animated, findNodeHandle} from 'react-native';
+import { Platform, StyleSheet, Text, View, Animated, findNodeHandle, TextInput } from 'react-native';
 import { connect } from 'react-native-animated-props'
 setInterval(() => {
   let iters = 1e8, sum = 0;
@@ -16,6 +16,7 @@ const instructions = Platform.select({
 export default class App extends Component {
   ref = React.createRef()
   ref2 = React.createRef()
+  ref3 = React.createRef()
   val = new Animated.Value(10)
   val2 = new Animated.Value(10)
   componentDidMount() {
@@ -67,15 +68,30 @@ export default class App extends Component {
         }
       })
     })
+
+/*    this.val.addListener(({ value }) => {
+      this.ref3.current.setNativeProps({
+        text: value.toString(),
+        value: value,
+        style: {
+          width: value
+        }
+      })
+    })*/
     //console.warn(this.val.__getNativeTag())
+    //setTimeout(()=>connect(this.ref2.current, this.val2, "width"), 200);
     connect(this.ref2.current, this.val2, "width")
-    connect(this.ref2.current, this.val2, "height")
+    connect(this.ref3.current, this.val2, "text", "string")
+    //connect(this.ref2.current, this.val2, "height")
     //RNAnimatedProps.connect(findNodeHandle(this.ref.current), this.val.__getNativeTag())
   }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <Text style={styles.welcome} children={"sdf"}/>
+        <TextInput  style={{height: 40,  borderColor: 'gray', borderWidth: 1}}
+                    ref={this.ref3}
+                    value="123"/>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         <View
@@ -86,7 +102,7 @@ export default class App extends Component {
             backgroundColor: 'red'
           }}
         />
-        <View
+       <View
           ref={this.ref2}
           style={{
             width: 100,

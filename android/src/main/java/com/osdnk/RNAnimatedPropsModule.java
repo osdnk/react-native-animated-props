@@ -4,7 +4,7 @@ package com.osdnk;
  * Through me you pass into the city of woe:
  * Through me you pass into eternal pain:
  * Through me among the people lost for aye.
- * Justice the founder of my __fabric__ moved:
+ * Justice the founder of my fabric moved:
  * To rear me was the task of Power divine,
  * Supremest Wisdom, and primeval Love. 1
  * Before me things create were none, save things
@@ -39,11 +39,13 @@ public class RNAnimatedPropsModule extends ReactContextBaseJavaModule {
     final int viewTag;
     final int nodeID;
     final String prop;
+    final String type;
 
-    private PropsConnector(int viewTag, int nodeID, String prop) {
+    private PropsConnector(int viewTag, int nodeID, String prop, String type) {
       this.viewTag = viewTag;
       this.nodeID = nodeID;
       this.prop = prop;
+      this.type = type;
     }
   }
 
@@ -74,7 +76,11 @@ public class RNAnimatedPropsModule extends ReactContextBaseJavaModule {
               for (PropsConnector p : connectors) {
                 if (p.nodeID == nodeID) {
                   final WritableMap nativeProps = Arguments.createMap();
-                  nativeProps.putDouble(p.prop, value);
+                  if (p.type.equals("number")) {
+                    nativeProps.putDouble(p.prop, value);
+                  } else if (p.type.equals("string")) {
+                    nativeProps.putString(p.prop, Double.toString(value));
+                  }
                   ReactShadowNode shadowNode = uiImplementation.resolveShadowNode(p.viewTag);
                   if (shadowNode != null) {
                     uiManagerModule.updateView(p.viewTag, shadowNode.getViewClass(), nativeProps);
@@ -195,9 +201,9 @@ public class RNAnimatedPropsModule extends ReactContextBaseJavaModule {
 
 
   @ReactMethod
-  public void connect(final int viewTag, final int nodeID, final String prop) {
+  public void connect(final int viewTag, final int nodeID, final String prop, final String type) {
     addListenerIfNeeded(nodeID);
-    connectors.add(new PropsConnector(viewTag, nodeID, prop));
+    connectors.add(new PropsConnector(viewTag, nodeID, prop, type));
   }
 
   @ReactMethod
