@@ -7,6 +7,6 @@
 #import <RCTAnimation/RCTValueAnimatedNode.h>
 #import <RCTAnimation/RCTNativeAnimatedNodesManager.h>
 
-@interface RNAnimatedProps : RCTEventEmitter <RCTBridgeModule, RCTValueAnimatedNodeObserver>
+@interface RNAnimatedProps : RCTEventEmitter <RCTBridgeModule>
 
 @end
