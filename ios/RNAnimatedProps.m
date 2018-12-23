@@ -49,8 +49,8 @@
 @interface PropsConncetor : NSObject
 
 - (instancetype)initWithViewTag:(NSNumber *) viewTag
-              withNodeID:(NSNumber *) nodeID
-                withProp:(NSString *) prop;
+                     withNodeID:(NSNumber *) nodeID
+                       withProp:(NSString *) prop;
 
 @property (nonatomic) NSNumber *viewTag;
 @property (nonatomic) NSNumber *nodeID;
@@ -64,11 +64,11 @@
                       withNodeID:(NSNumber *)nodeID
                         withProp:(NSString *)prop
 {
-   if ((self = [super init])) {
-     _viewTag = viewTag;
-     _nodeID = nodeID;
-     _prop = prop;
-   }
+  if ((self = [super init])) {
+    _viewTag = viewTag;
+    _nodeID = nodeID;
+    _prop = prop;
+  }
   return self;
 }
 
@@ -90,7 +90,7 @@ typedef void (^AnimatedOperation)(RCTNativeAnimatedNodesManager *nodesManager);
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  // maybe xD
+  // Need to implement it in order to fill in bridge protocol.
   return nil;
 }
 
@@ -139,9 +139,29 @@ typedef void (^AnimatedOperation)(RCTNativeAnimatedNodesManager *nodesManager);
   }
   
 }
+
+- (void)removeListenerIfPossbile:(NSNumber *)nodeID
+{
+  BOOL foundRegisteredListener = NO;
+  for (PropsConncetor * c in _connectors)
+  {
+    if (c.nodeID == nodeID)
+    {
+      foundRegisteredListener = YES;
+      break;
+    }
+  }
+  if (!foundRegisteredListener) {
+    [_listeners removeObjectForKey:nodeID];
+    [_operations addObject:^(RCTNativeAnimatedNodesManager *nodesManager) {
+      [nodesManager stopListeningToAnimatedNodeValue:nodeID];
+    }];
+  }
+  
+}
+
 - (dispatch_queue_t)methodQueue
 {
-  // maybe xD
   return RCTGetUIManagerQueue();
 }
 
@@ -156,12 +176,18 @@ RCT_EXPORT_METHOD(connect:(nonnull NSNumber *)viewTag
   [_connectors addObject:[[PropsConncetor alloc] initWithViewTag:viewTag withNodeID:nodeID withProp:prop]];
 }
 
-RCT_EXPORT_METHOD(disconnect:(nonnull NSNumber *)nodeID
-                  withAnimatedNode:(nonnull NSNumber *)tag
+RCT_EXPORT_METHOD(disconnect:(nonnull NSNumber *)viewTag
+                  withAnimatedNode:(nonnull NSNumber *)nodeID
                   withPropName:(nonnull NSString *) prop)
 {
-  // TODO
-  
+  for (PropsConncetor * c in _connectors)
+  {
+    if (c.nodeID == nodeID && c.viewTag == viewTag && c.prop == prop)
+    {
+      [_connectors removeObject:c];
+    }
+  }
+  [self removeListenerIfPossbile:nodeID];
 }
 
 @end
