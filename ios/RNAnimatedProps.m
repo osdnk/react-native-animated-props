@@ -48,9 +48,10 @@
 
 @interface PropsConncetor : NSObject
 
-- (instancetype)initWithViewTag:(NSNumber *) viewTag
-                     withNodeID:(NSNumber *) nodeID
-                       withProp:(NSString *) prop;
+- (instancetype)initWithViewTag:(NSNumber *)viewTag
+                     withNodeID:(NSNumber *)nodeID
+                       withProp:(NSString *)prop
+                         onType:(NSString *)type;
 
 @property (nonatomic) NSNumber *viewTag;
 @property (nonatomic) NSNumber *nodeID;
@@ -87,7 +88,6 @@ typedef void (^AnimatedOperation)(RCTNativeAnimatedNodesManager *nodesManager);
   RCTUIManager *_uiManager;
   NSMutableSet<PropsConncetor *> *_connectors;
   NSMutableDictionary<NSNumber *, NativeValueObserver *> *_listeners;
-  RCTNativeAnimatedNodesManager *_nodesManager;
   NSMutableArray<AnimatedOperation> *_operations;
 }
 
@@ -122,7 +122,6 @@ typedef void (^AnimatedOperation)(RCTNativeAnimatedNodesManager *nodesManager);
 - (void)setBridge:(RCTBridge *)bridge {
   [super setBridge:bridge];
   NSObject *m = [[[self.bridge valueForKey:@"moduleDataByName"] valueForKey:@"NativeAnimatedModule"] valueForKey: @"instance"];
-  _nodesManager = (RCTNativeAnimatedNodesManager *)[m valueForKey:@"nodesManager"];
   _operations = (NSMutableArray<AnimatedOperation> *)[m valueForKey:@"operations"];
   _connectors = [[NSMutableSet alloc] init];
   _uiManager = self.bridge.uiManager;
