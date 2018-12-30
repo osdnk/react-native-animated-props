@@ -80,8 +80,9 @@ export default class App extends Component {
           }).start()
       }
     ); // Start the animation
-    this.coni = cond(lesserThan(this.val, 150), this.val, this.val);
-    console.log(this.coni)
+    //this.coni =cond(lesserThan(this.val, 150), this.val, this.val);
+    this.coni =Animated.add(7,this.val)
+    //console.log(this.coni)
 
 
     //this.val.addListener((e) => console.log(e))
@@ -125,12 +126,24 @@ export default class App extends Component {
             backgroundColor: 'red'
           }}
         />
-       <Animated.View
+        <Animated.View
           ref={this.ref2}
           style={{
             width: 100,
             height: 100,
             backgroundColor: 'red'
+          }}
+        />
+
+        <Animated.View
+          style={{
+            width: 100,
+            height: 10,
+            backgroundColor: 'red',
+
+            transform: [{
+              translateX: this.coni
+            }]
           }}
         />
       </View>
